@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "**/.git": false
+  },
+  "ruff.configuration": "${workspaceFolder}/pyproject.toml",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true,
+  }
+}

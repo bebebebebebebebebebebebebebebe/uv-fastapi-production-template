@@ -1,0 +1,90 @@
+services:
+  web:
+    tty: true
+    stdin_open: true
+    depends_on:
+      - postgresql
+      - redis
+    build: .
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env
+
+    networks:
+      - backend-network
+
+    # deploy:
+    #   replicas: 3
+
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /tmp
+          ignore:
+            - .venv/
+
+        - action: rebuild
+          path: ./pyproject.toml
+
+  # worker:
+  #   tty: true
+  #   stdin_open: true
+  #   build:
+  #     context: .
+  #     dockerfile: worker.Dockerfile
+  #   env_file:
+  #     - .env
+
+  #   environment:
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #     - REDIS_DB=0
+
+  #   depends_on:
+  #     - postgresql
+  #     - redis
+
+  #   networks:
+  #     - backend-network
+
+  postgresql:
+    image: postgres:14
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+    - POSTGRES_USER=user
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=dev-db
+
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./default.conf:/etc/nginx/conf.d/default.conf
+
+  #   depends_on:
+  #     - web
+
+  #   networks:
+  #     - backend-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  backend-network:
