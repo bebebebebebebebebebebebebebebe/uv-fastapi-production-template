@@ -172,3 +172,48 @@ class GoogleOAuthService(OAuthService):
             name=name,
             picture=picture,
         )
+
+    async def refresh_token(self, refresh_token: str) -> OAuthToken | None:
+        """
+        リフレッシュトークンを使用して新しいアクセストークンを取得します。
+        Args:
+            refresh_token (str): リフレッシュトークン。
+        Returns:
+            OAuthToken | None: 新しいトークン。
+        """
+
+        if not refresh_token:
+            logger.error('リフレッシュトークンが存在しません')
+            return None
+
+        payload = {
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'refresh_token': refresh_token,
+            'grant_type': 'refresh_token',
+        }
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(self.token_url, data=payload)
+                response.raise_for_status()
+                token_data = response.json()
+                logger.info(f'GoogleOAuthトークンを取得しました: {token_data}')
+
+                return OAuthToken.create(
+                    id_token=token_data.get('id_token'),
+                    access_token=token_data.get('access_token'),
+                    refresh_token=token_data.get('refresh_token', refresh_token),
+                    expires_in=token_data.get('expires_in', 3600),
+                    token_type=token_data.get('token_type', 'Bearer'),
+                    scope=token_data.get('scope'),
+                )
+
+            except httpx.HTTPStatusError as e:
+                logger.error(f'トークンリフレッシュ中にHTTPStatusErrorが発生しました: {e}')
+                return None
+            except httpx.RequestError as e:
+                logger.error(f'トークンリフレッシュ中にRequestErrorが発生しました: {e}')
+                return None
+            except Exception as e:
+                logger.error(f'トークンリフレッシュ中に予期しないエラーが発生しました: {e}')
+                return None
