@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
 
+from src.app.domains.users.dtos.user_dtos import CreateInternalUser, UpdateInternalUser
 from src.app.domains.users.entities.user_entity import UserEntity
 from src.app.domains.users.schemas.user_schemas import Email
 
 
 class UserRepositoryInterface(ABC):
     @abstractmethod
-    async def create_user(self, user: UserEntity) -> UserEntity:
+    async def create_user(self, create_dto: CreateInternalUser) -> UserEntity:
         """
         ユーザーを作成します。
 
         Args:
-            user (UserEntity): 作成するユーザーの情報を含むエンティティ。
+            create_dto (CreateInternalUser): 作成するユーザーの情報を含むDTO。
         returns:
             UserEntity: 作成されたユーザーのエンティティ。
         """
@@ -55,11 +56,11 @@ class UserRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    async def update(self, user: UserEntity) -> UserEntity:
+    async def update(self, update_dto: UpdateInternalUser) -> UserEntity:
         """
         ユーザー情報を更新します。
         Args:
-            user (UserEntity): 更新するユーザーのエンティティ。
+            update_dto (UpdateInternalUser): 更新するユーザーの情報を含むDTO。
         returns:
             UserEntity: 更新されたユーザーのエンティティ。
         """

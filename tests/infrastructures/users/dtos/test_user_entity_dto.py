@@ -5,7 +5,7 @@ import pytest
 from src.app.core.schemas.global_value_objects import EntityUUID
 from src.app.domains.users.entities.user_entity import UserEntity
 from src.app.domains.users.schemas.user_schemas import Email, FullName
-from src.app.infrastructures.users.dtos.user_dto import UserEntityDTO
+from src.app.infrastructures.users.dtos.user_entity_dto import UserEntityDTO
 from src.app.models.user import User
 from src.utils.logger import get_logger
 
