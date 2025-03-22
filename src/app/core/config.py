@@ -11,6 +11,7 @@ class AppSettings(BaseSettings):
     APP_CORS_ORIGINS: str = Field(default='*')
     APP_CORS_METHODS: str = Field(default='*')
     APP_USE_HTTPS: bool = Field(default=False)
+    GOOGLE_API_KEY: str = Field(default='')
     GOOGLE_OAUTH_CLIENT_ID: str = Field(default='')
     GOOGLE_OAUTH_CLIENT_SECRET: str = Field(default='')
     GOOGLE_AUTH_URL: str = Field(default='https://accounts.google.com/o/oauth2/auth')
