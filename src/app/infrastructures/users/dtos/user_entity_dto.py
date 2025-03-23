@@ -22,12 +22,10 @@ class UserEntityDTO(EntityWithModelDTO[UserEntity, User]):
         Returns:
             UserEntity: UserEntityインスタンス
         """
-        full_name = None
-        if model.full_name:
-            parts = model.full_name.split(' ', 1)
-            first_name = parts[0]
-            last_name = parts[1] if len(parts) > 1 else ''
-            full_name = FullName(first_name=first_name, last_name=last_name)
+        parts = model.full_name.split(' ', 1)
+        first_name = parts[0]
+        last_name = parts[1] if len(parts) > 1 else ''
+        full_name = FullName(first_name=first_name, last_name=last_name)
 
         return UserEntity(
             id=model.id,
@@ -59,13 +57,11 @@ class UserEntityDTO(EntityWithModelDTO[UserEntity, User]):
             'email': entity.email.email,
             'is_verified': entity.is_verified,
             'uuid': str(entity.uuid.value),
+            'full_name': str(entity.full_name),
             'created_at': entity.created_at,
         }
 
         # 任意フィールド
-        if entity.full_name:
-            data['full_name'] = str(entity.full_name)
-
         if entity.hashed_password:
             data['hashed_password'] = entity.hashed_password
 

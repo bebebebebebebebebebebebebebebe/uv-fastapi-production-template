@@ -8,7 +8,7 @@ class CreateInternalUser(BaseModel):
 
     username: str
     email: str
-    full_name: str | None = None
+    full_name: str
     hashed_password: str | None = None
     is_verified: bool = False
     profile_image_url: str | None = None

@@ -12,12 +12,12 @@ from .social_account import SocialAccount
 class User(Base):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column('id', autoincrement=True, primary_key=True, unique=True)
-    username: Mapped[str] = mapped_column(String(50), unique=True)
-    email: Mapped[str] = mapped_column(String(100), unique=True)
+    username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     uuid: Mapped[uuid_pkg.UUID] = mapped_column(
         unique=True,
     )
-    full_name: Mapped[str | None] = mapped_column(String(50), default=None, nullable=True)
+    full_name: Mapped[str] = mapped_column(String(50), nullable=False)
     hashed_password: Mapped[str | None] = mapped_column(String, nullable=True, default=None)
     is_verified: Mapped[bool] = mapped_column(default=False)
     profile_image_url: Mapped[str | None] = mapped_column(String(255), nullable=True, default=None)

@@ -14,7 +14,7 @@ class UserEntity:
     id: int
     username: str
     email: Email
-    full_name: FullName | None = None
+    full_name: FullName
     hashed_password: str | None = None
     is_verified: bool = False
     profile_image_url: str | None = None

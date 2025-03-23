@@ -48,6 +48,7 @@ def social_account(provider_email: ProviderEmail, fixed_time: datetime):
 def user_entity(user_full_name, user_email, mock_entity_uuid, fixed_time):
     """テスト用の基本的なUserEntityを作成"""
     return UserEntity(
+        id=1,
         full_name=user_full_name,
         username='testuser',
         email=user_email,
